@@ -1,35 +1,40 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from 'react';
+import { Route, Routes, Navigate, BrowserRouter } from 'react-router-dom';
+import Login from './components/Login';
+import BookList from './components/BookList';
+import AdminDashboard from './components/AdminDashboard';
+import PasswordResetRequest from './components/PasswordResetRequest';
+import PasswordResetForm from './components/PasswordResetForm';
+import SignUp from './components/Signup';
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  const [token, setToken] = useState(null);
+  const [role, setRole] = useState(null);
+
+  // Extract role from token after login
+  const isAdmin = role === 'admin';
 
   return (
-    <>
+    <BrowserRouter>
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <Routes>
+          <Route path="/login" element={<Login setToken={setToken} setRole={setRole} />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route
+            path="/books"
+            element={token ? <BookList token={token} /> : <Navigate to="/login" replace />}
+          />
+          <Route path="/reset-password" element={<PasswordResetRequest />} />
+          <Route path="/reset-password/:token" element={<PasswordResetForm />} />
+          <Route
+            path="/admin"
+            element={isAdmin ? <AdminDashboard token={token} /> : <Navigate to="/login" replace />}
+          />
+          <Route path="*" element={<Navigate to={token ? "/books" : "/login"} replace />} />
+        </Routes>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    </BrowserRouter>
+  );
+};
 
-export default App
+export default App;
