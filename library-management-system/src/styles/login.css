@@ -1,0 +1,110 @@
+/* @import 'variables.css';
+
+.login-page {
+    background-color: red;
+    height: 100vh;
+    display: flex;
+}
+
+.login-img {
+    flex: 1;
+}
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    justify-content: center;
+    background: #bdbec5;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.login-form form {
+    width: 60%;
+    max-width: 500px;
+}
+
+.login-input {   
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+}
+
+.login-input label {
+    font-size: var(--font-size-md);
+    margin-bottom: 10px;
+}
+
+.login-input input {
+    outline: none;
+    border: none;
+    height: 30px;
+    padding: var(--padding);
+    font-size: var(--font-size-sm);
+    border-radius: var(--border-radius-md);
+}
+
+.login-input:nth-child(3) {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.login-button {
+    background-color: yellow;
+    width: 100%;
+    outline: none;
+    border: none;
+    height: 40px;
+    padding: var(--padding);
+    font-size: var(--font-size-sm);
+    border-radius: var(--border-radius-md);
+}
+
+.login-links {
+    width: 100%;
+    text-align: center;
+}
+
+.login-signup {
+    margin-bottom: 10px;
+}
+
+@media screen and (max-width: 768px) {
+    .login-page {
+        flex-direction: column;
+    }
+
+    .login-form form {
+        width: 80%;
+    }
+
+    .login-input label {
+        font-size: var(--font-size-sm);
+        margin-bottom: 5px;
+    }
+    
+    .login-input input {
+        height: 20px;
+        font-size: var(--font-size-xsm);
+        border-radius: var(--border-radius-sm);
+    }
+    
+    .login-input:nth-child(3) {
+        margin: 5px 0 10px 0;
+    }
+    
+    .login-button {
+        height: 30px;
+        font-size: var(--font-size-xsm);
+        border-radius: var(--border-radius-sm);
+    }
+    
+} */
+
