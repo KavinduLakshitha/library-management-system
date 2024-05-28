@@ -69,8 +69,7 @@ router.post('/reset-password', async (req, res) => {
       return res.status(404).send('User not found');
     }
     
-    const hashedPassword = await bcrypt.hash(password, 10);
-    user.password = hashedPassword;
+    user.password = password;
     await user.save();
 
     res.send('Password reset successful.');
@@ -79,5 +78,6 @@ router.post('/reset-password', async (req, res) => {
     res.status(500).send('Internal server error');
   }
 });
+
 
 module.exports = router;

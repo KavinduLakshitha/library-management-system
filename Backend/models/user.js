@@ -25,6 +25,11 @@ const userSchema = new mongoose.Schema({
 
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
+
+  // Check if the password is already hashed
+  const isHashed = this.password.startsWith('$2b$');
+  if (isHashed) return next();
+
   const hash = await bcrypt.hash(this.password, 10);
   this.password = hash;
   next();

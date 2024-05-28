@@ -21,24 +21,40 @@ const PasswordResetRequest = () => {
   };
 
   return (
-    <div>
-      <h2>Password Reset Request</h2>
-      {message && <p>{message}</p>}
-      <form onSubmit={handleSubmit}>
+      <div className='login-page font-sans h-screen flex justify-center items-center w-full overflow-hidden'>
+      <div className='login-container w-[500px] flex flex-col justify-center'>        
+        <div className='login-form w-full'>        
+        <h2 className='text-3xl font-bold'>Reset your password</h2>
+
+        {message && <p>{message}</p>}
+        <form onSubmit={handleSubmit}>
+            
+          <div className='login-input flex justify-center flex-col w-full mb-3'>
+            <label className='text-lg mb-3' htmlFor="username">Username</label>
             <input
+              className='border-none outline-none bg-gray-100 px-2 py-3 rounded-md'
                 type="text"
                 placeholder="Username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
             />
+          </div>  
+
+          <div className='login-input flex justify-center flex-col w-full mb-6'>
+            <label className='text-lg mb-3' htmlFor="password">Enter a new password</label>
             <input
+                className='border-none outline-none bg-gray-100 p-2 rounded-md'
                 type="password"
                 placeholder="New Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
             />
-            <button type="submit">Reset Password</button>
-        </form>
+             </div>
+            <button className='login-button bg-yellow-500 border-none outline-none px-2 py-3 rounded-md w-full' type="submit">Reset Password</button>
+           
+          </form>                         
+        </div>        
+      </div>
     </div>
   );
 };
