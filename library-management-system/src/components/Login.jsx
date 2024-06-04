@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 const Login = ({ setToken, setRole }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -19,25 +20,31 @@ const Login = ({ setToken, setRole }) => {
       setRole(decodedToken.role);
       navigate('/books');
     } catch (error) {
+      setError('Invalid username or password');
       console.error('Error during login:', error);
     }
   };
 
   return (
     <div className='login-page font-sans h-screen flex justify-center gap-10 items-center w-full overflow-hidden'>
-      <div className='h-[800px] flex items-center justify-center'><img className='h-3/4 object-contain' src="/login.jpg" alt="" /></div>    
+      <div className='h-[800px] flex items-center justify-center'>
+        <img className='h-3/4 object-contain' src="/login.jpg" alt="Login" />
+      </div>    
       <div className='login-container w-[500px] flex flex-col justify-center'>        
         <div className='login-form w-full'>        
-          <form onSubmit={handleLogin} className='flex flex-col align-middle'>
-          <h2 className='text-3xl font-bold'>Login</h2>            
+          <form onSubmit={handleLogin} method="POST" className='flex flex-col align-middle'>
+            <h2 className='text-3xl font-bold'>Login</h2>            
+            {error && <p className="error text-red-500">{error}</p>}
             <div className='login-input flex justify-center flex-col w-full mb-3'>
               <label className='text-lg mb-3' htmlFor="username">Username</label>
               <input
                 className='border-none outline-none bg-gray-100 px-2 py-3 rounded-md'
                 type="text"
+                name="username"
                 placeholder="Enter Username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
+                autoComplete="username"
               />
             </div>
             
@@ -46,9 +53,11 @@ const Login = ({ setToken, setRole }) => {
               <input
                 className='border-none outline-none bg-gray-100 p-2 rounded-md'
                 type="password"
+                name="password"
                 placeholder="Enter Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                autoComplete="current-password"
               />
             </div>
                         

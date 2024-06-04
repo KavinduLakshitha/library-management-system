@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Route, Routes, Navigate, BrowserRouter } from 'react-router-dom';
 import Login from './components/Login';
 import BookList from './components/BookList';
@@ -8,16 +8,31 @@ import PasswordResetForm from './components/PasswordResetForm';
 import SignUp from './components/Signup';
 
 const App = () => {
-  const [token, setToken] = useState(null);
-  const [role, setRole] = useState(null);
+  const [token, setToken] = useState(localStorage.getItem('token'));
+  const [role, setRole] = useState(localStorage.getItem('role'));
 
-  // Extract role from token after login
+  useEffect(() => {
+    if (token) {
+      localStorage.setItem('token', token);
+    } else {
+      localStorage.removeItem('token');
+    }
+  }, [token]);
+
+  useEffect(() => {
+    if (role) {
+      localStorage.setItem('role', role);
+    } else {
+      localStorage.removeItem('role');
+    }
+  }, [role]);
+
   const isAdmin = role === 'admin';
 
   return (
     <BrowserRouter>
       <div>
-      <Routes>
+        <Routes>
           <Route path="/login" element={<Login setToken={setToken} setRole={setRole} />} />
           <Route path="/signup" element={<SignUp />} />
           <Route
