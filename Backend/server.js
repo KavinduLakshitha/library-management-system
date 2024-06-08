@@ -5,6 +5,8 @@ const cors = require('cors');
 
 const app = express();
 
+app.use('/api/dh-exchange', require('./routes/dhExchange'));
+
 app.use(cors(
   {
     origin: 'http://localhost:5173',
@@ -17,6 +19,8 @@ app.use(express.json());
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/admin', require('./routes/admin'));
 app.use('/api/books', require('./routes/book'));
+app.use('/api/dh-exchange', require('./routes/dhExchange'));
+app.use('/api/downloaded-books', require('./routes/downloadedBook'));
 
 console.log('MONGO_URI:', process.env.MONGO_URI);
 console.log('JWT_SECRET:', process.env.JWT_SECRET);

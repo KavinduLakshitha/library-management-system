@@ -20,13 +20,16 @@ const userSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Role',
     required: true
-  }
+  },
+  downloadedBooks: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Book'
+  }]
 });
 
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
 
-  // Check if the password is already hashed
   const isHashed = this.password.startsWith('$2b$');
   if (isHashed) return next();
 

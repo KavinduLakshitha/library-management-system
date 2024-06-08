@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../index.css';
+import BookModal from './BookModal';
 
 const BookList = ({ token }) => {
   const [books, setBooks] = useState([]);
-  const [dropdownVisible, setDropdownVisible] = useState(false);
+  const [selectedBook, setSelectedBook] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -12,6 +15,9 @@ const BookList = ({ token }) => {
         const response = await axios.get('http://localhost:5000/api/books', {
           headers: {
             Authorization: `Bearer ${token}`,
+          },
+          params: {
+            title: searchTerm,
           },
         });
         setBooks(response.data);
@@ -21,7 +27,7 @@ const BookList = ({ token }) => {
     };
 
     fetchBooks();
-  }, [token]);
+  }, [token, searchTerm]);
 
   const arrayBufferToBase64 = (buffer) => {
     let binary = '';
@@ -33,43 +39,45 @@ const BookList = ({ token }) => {
     return window.btoa(binary);
   };
 
-  const toggleDropdown = () => {
-    setDropdownVisible(!dropdownVisible);
+  const handleBookClick = (book) => {
+    setSelectedBook(book);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedBook(null);
+  };
+
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
   };
 
   return (
     <div className='booklist-page font-sans h-screen flex flex-col p-10'>
       <h1 className='text-4xl font-bold mb-10 text-left'>Online library</h1>
-      <div className='menu-bar flex items-center mb-10'>
+      <div className='menu-bar flex items-center justify-between mb-10'>
         <input
           type='text'
           placeholder='Search...'
           className='search-bar p-2 border rounded-md'
+          value={searchTerm}
+          onChange={handleSearchChange}
         />
-        <a href='/my-books' className='my-books-link text-xl'>
-          My Books
-        </a>
-        <div className='relative'>
-          <button onClick={toggleDropdown} className='profile-icon text-xl'>
-            Profile
+        <div>
+          <a href='/my-books' className='my-books-link text-xl'>
+            My Books
+          </a>
+          <button className='profile-icon text-xl ml-5'>
+            Logout
           </button>
-          {dropdownVisible && (
-            <div className='dropdown-menu absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg'>
-              <a href='/settings' className='block px-4 py-2 text-gray-800 hover:bg-gray-100'>
-                Settings
-              </a>
-              <a href='/logout' className='block px-4 py-2 text-gray-800 hover:bg-gray-100'>
-                Log Out
-              </a>
-            </div>
-          )}
         </div>
       </div>
-      <div className='booklist-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10'>
+      <div className='booklist-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-5'>
         {books.map(book => (
-          <div key={book._id} className='book-card p-5 bg-white shadow-md rounded-md'>
-            <h2 className='text-xl font-semibold mb-3'>{book.title}</h2>
-            <p className='text-lg mb-3'>by {book.author}</p>
+          <div key={book._id} className='book-card bg-white shadow-md rounded-md cursor-pointer flex flex-col items-center' onClick={() => handleBookClick(book)}>
+            <h2 className='text-xl font-semibold mb-3 text-center'>{book.title}</h2>
+            <p className='text-lg mb-3 text-center'>by {book.author}</p>
             {book.bookCover && book.bookCover.data && (
               <img
                 src={`data:${book.bookCover.contentType};base64,${arrayBufferToBase64(book.bookCover.data.data)}`}
@@ -77,10 +85,12 @@ const BookList = ({ token }) => {
                 className='w-3/4 h-auto mb-3 object-contain'
               />
             )}
-            {/* <p className='text-lg'>{book.description}</p> */}
           </div>
         ))}
       </div>
+      {isModalOpen && selectedBook && (
+        <BookModal book={selectedBook} onClose={closeModal} />
+      )}
     </div>
   );
 };
