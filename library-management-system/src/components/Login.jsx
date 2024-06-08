@@ -18,12 +18,18 @@ const Login = ({ setToken, setRole }) => {
       setToken(token);
       const decodedToken = JSON.parse(atob(token.split('.')[1]));
       setRole(decodedToken.role);
-      navigate('/books');
+      
+      if (decodedToken.role === 'admin') {
+        navigate('/admin');
+      } else {
+        navigate('/books');
+      }
     } catch (error) {
       setError('Invalid username or password');
       console.error('Error during login:', error);
     }
   };
+  
 
   return (
     <div className='login-page font-sans h-screen flex justify-center gap-10 items-center w-full overflow-hidden'>

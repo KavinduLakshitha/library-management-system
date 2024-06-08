@@ -8,6 +8,7 @@ const BookList = ({ token }) => {
   const [selectedBook, setSelectedBook] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -49,6 +50,21 @@ const BookList = ({ token }) => {
     setSelectedBook(null);
   };
 
+  const handleLogout = () => {
+    setShowLogoutModal(true);
+  };
+
+  const confirmLogout = () => {
+    setShowLogoutModal(false);
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    window.location.href = '/login';
+  };
+
+  const cancelLogout = () => {
+    setShowLogoutModal(false);
+  };
+
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
@@ -64,11 +80,8 @@ const BookList = ({ token }) => {
           value={searchTerm}
           onChange={handleSearchChange}
         />
-        <div>
-          <a href='/my-books' className='my-books-link text-xl'>
-            My Books
-          </a>
-          <button className='profile-icon text-xl ml-5'>
+        <div>          
+          <button onClick={handleLogout} className='profile-icon text-xl ml-5'>
             Logout
           </button>
         </div>
@@ -91,6 +104,21 @@ const BookList = ({ token }) => {
       {isModalOpen && selectedBook && (
         <BookModal book={selectedBook} onClose={closeModal} />
       )}
+      {showLogoutModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
+          <div className="bg-white p-10 rounded-md">
+            <h2 className="text-2xl font-semibold mb-5 text-center">Are you sure you want to logout?</h2>
+            <div className="flex justify-center">
+              <button onClick={confirmLogout} className="p-2 bg-yellow-500 text-white rounded-md mr-2">
+                Yes
+              </button>
+              <button onClick={cancelLogout} className="p-2 bg-gray-500 text-white rounded-md">
+                No
+              </button>
+            </div>
+          </div>
+        </div>
+        )}
     </div>
   );
 };

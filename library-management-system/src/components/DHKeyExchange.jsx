@@ -19,8 +19,6 @@ const DHKeyExchange = () => {
         const serverPublicKey = response.data.serverPublicKey;
         const sharedSecret = dhParams.computeSecret(serverPublicKey);
 
-        // Store the shared secret securely on the client
-        // ...
 
         console.log('Diffie-Hellman key exchange completed.');
       } catch (error) {

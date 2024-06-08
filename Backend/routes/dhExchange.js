@@ -10,9 +10,6 @@ router.post('/', (req, res) => {
   const clientPublicKey = req.body.publicKey;
   const serverPublicKey = dhParams.getPublicKey();
   const sharedSecret = dhParams.computeSecret(clientPublicKey);
-  
-  // Store the shared secret securely on the server
-  // ...
 
   res.json({ serverPublicKey });
 });

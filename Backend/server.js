@@ -22,8 +22,8 @@ app.use('/api/books', require('./routes/book'));
 app.use('/api/dh-exchange', require('./routes/dhExchange'));
 app.use('/api/downloaded-books', require('./routes/downloadedBook'));
 
-console.log('MONGO_URI:', process.env.MONGO_URI);
-console.log('JWT_SECRET:', process.env.JWT_SECRET);
+// console.log('MONGO_URI:', process.env.MONGO_URI);
+// console.log('JWT_SECRET:', process.env.JWT_SECRET);
 
 const startServer = async () => {
   try {
