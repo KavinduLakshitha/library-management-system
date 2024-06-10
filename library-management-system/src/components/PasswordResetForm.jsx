@@ -7,6 +7,7 @@ const PasswordResetForm = () => {
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
   const { token } = useParams();
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,12 +27,14 @@ const PasswordResetForm = () => {
       {message && <p>{message}</p>}
       <form onSubmit={handleSubmit}>
         <input
-          type="password"
+          className='border-none outline-none bg-gray-100 p-2 rounded-md w-full'
+          type={passwordVisible ? "text" : "password"}
           placeholder="New Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          required
         />
-        <button type="submit">Reset Password</button>
+        <button className='bg-yellow-500 border-none outline-none px-2 py-3 rounded-md' type="submit">Reset Password</button>
       </form>
     </div>
   );

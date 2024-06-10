@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../index.css';
 import BookModal from './BookModal';
+import HeroSection from './HeroSection';
 
 const BookList = ({ token }) => {
   const [books, setBooks] = useState([]);
@@ -70,34 +71,43 @@ const BookList = ({ token }) => {
   };
 
   return (
-    <div className='booklist-page font-sans h-screen flex flex-col p-10'>
-      <h1 className='text-4xl font-bold mb-10 text-left'>Online library</h1>
-      <div className='menu-bar flex items-center justify-between mb-10'>
-        <input
-          type='text'
-          placeholder='Search...'
-          className='search-bar p-2 border rounded-md'
-          value={searchTerm}
-          onChange={handleSearchChange}
-        />
-        <div>          
-          <button onClick={handleLogout} className='profile-icon text-xl ml-5'>
-            Logout
-          </button>
+    <>      
+      <div className='booklist-page font-sans h-screen flex flex-col'>      
+      <div className='px-6 py-5'>        
+        <div className='menu-bar flex items-center justify-center relative'>
+          
+        <h1 className='text-4xl mr-10 font-bold text-center'>Boundless Books</h1>
+
+          <input
+            type='text'
+            placeholder='Search by book title'
+            className='search-bar p-2 border rounded-md w-1/3 bg-gray-100 outline-none'
+            value={searchTerm}
+            onChange={handleSearchChange}
+          />
+          <div className='ml-auto right-0'>
+            <button onClick={handleLogout} className='profile-icon text-xl'>
+          Logout
+        </button>
         </div>
+      </div>     
+      
       </div>
-      <div className='booklist-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-5'>
+
+      <HeroSection />
+          
+      <div className='booklist-grid grid grid-cols-1 mt-5 md:grid-cols-2 lg:grid-cols-5 gap-5'>
         {books.map(book => (
           <div key={book._id} className='book-card bg-white shadow-md rounded-md cursor-pointer flex flex-col items-center' onClick={() => handleBookClick(book)}>
-            <h2 className='text-xl font-semibold mb-3 text-center'>{book.title}</h2>
-            <p className='text-lg mb-3 text-center'>by {book.author}</p>
             {book.bookCover && book.bookCover.data && (
               <img
                 src={`data:${book.bookCover.contentType};base64,${arrayBufferToBase64(book.bookCover.data.data)}`}
                 alt={`${book.title} cover`}
-                className='w-3/4 h-auto mb-3 object-contain'
+                className='w-3/4 h-auto mt-3 mb-3 object-contain rounded-xl'
               />
             )}
+            <h2 className='text-xl font-semibold mb-3 text-center'>{book.title}</h2>
+            <p className='text-lg mb-3 text-center'>by {book.author}</p>
           </div>
         ))}
       </div>
@@ -120,6 +130,8 @@ const BookList = ({ token }) => {
         </div>
         )}
     </div>
+  </>
+    
   );
 };
 

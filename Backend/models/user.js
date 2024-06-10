@@ -20,11 +20,7 @@ const userSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Role',
     required: true
-  },
-  downloadedBooks: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Book'
-  }]
+  },  
 });
 
 userSchema.pre('save', async function (next) {

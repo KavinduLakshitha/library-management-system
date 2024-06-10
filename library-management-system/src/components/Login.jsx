@@ -3,15 +3,22 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../index.css';
 import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 const Login = ({ setToken, setRole }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
+  const [passwordVisible, setPasswordVisible] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    if (!username || !password) {
+      setError('Username and password are required');
+      return;
+    }
     try {
       const response = await axios.post('http://localhost:5000/api/auth/login', { username, password });
       const { token } = response.data;
@@ -29,7 +36,6 @@ const Login = ({ setToken, setRole }) => {
       console.error('Error during login:', error);
     }
   };
-  
 
   return (
     <div className='login-page font-sans h-screen flex justify-center gap-10 items-center w-full overflow-hidden'>
@@ -51,20 +57,31 @@ const Login = ({ setToken, setRole }) => {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 autoComplete="username"
+                required
               />
             </div>
             
             <div className='login-input flex justify-center flex-col w-full mb-6'>
               <label className='text-lg mb-3' htmlFor="password">Password</label>
-              <input
-                className='border-none outline-none bg-gray-100 p-2 rounded-md'
-                type="password"
-                name="password"
-                placeholder="Enter Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                autoComplete="current-password"
-              />
+              <div className='relative'>
+                <input
+                  className='border-none outline-none bg-gray-100 p-2 rounded-md w-full'
+                  type={passwordVisible ? "text" : "password"}
+                  name="password"
+                  placeholder="Enter Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  autoComplete="current-password"
+                  required
+                />
+                <button
+                  type="button"
+                  className='absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500'
+                  onClick={() => setPasswordVisible(!passwordVisible)}
+                >
+                  <FontAwesomeIcon icon={passwordVisible ? faEyeSlash : faEye} />
+                </button>
+              </div>
             </div>
                         
             <button className='login-button bg-yellow-500 border-none outline-none px-2 py-3 rounded-md' type="submit">Login</button>
